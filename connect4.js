@@ -24,6 +24,10 @@ function makeBoard() {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
+function clickSound() {
+  const audio = new Audio("connectFourClick.wav");
+  audio.play();
+}
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.getElementById("board");
@@ -51,6 +55,7 @@ function makeHtmlBoard() {
     }
     htmlBoard.append(row);
   }
+  top.addEventListener("click", clickSound); // Adds clicking sound when when top squere is cliked on
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
@@ -82,7 +87,13 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 
+function emptyingSound() {
+  const audio = new Audio("connectFourEmptyingSound.wav");
+  audio.play();
+}
+
 function endGame(msg) {
+  emptyingSound();
   // TODO: pop up alert message
   alert(msg);
 }
@@ -102,7 +113,7 @@ function handleClick(evt) {
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
-  board[y][x] = currPlayer;
+
   placeInTable(y, x);
 
   // check for win
