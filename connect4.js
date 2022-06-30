@@ -113,7 +113,7 @@ function handleClick(evt) {
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
-
+  board[y][x] = currPlayer;
   placeInTable(y, x);
 
   // check for win
