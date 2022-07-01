@@ -17,17 +17,19 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-  for (let h = 0; h < WIDTH; h++) {
-    board.push(Array.from({ length: HEIGHT }));
+  for (let h = 0; h < HEIGHT; h++) {
+    board.push(Array.from({ length: WIDTH }));
   }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
+const audio = new Audio("connectFourClick.wav");
+
 function clickSound() {
-  const audio = new Audio("connectFourClick.wav");
   audio.play();
 }
+
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.getElementById("board");
@@ -61,10 +63,16 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  const col = board[x];
-  for (let i = col.length - 1; i >= 0; i--) {
-    if (col[i] === undefined) {
-      return i;
+  // const col = board[x];
+  // console.log({ col });
+  // for (let i = col.length - 1; i >= 0; i--) {
+  //   if (col[i] === undefined) {
+  //     return i;
+  //   }
+  // }
+  for (let rowIndex = HEIGHT - 1; rowIndex >= 0; rowIndex--) {
+    if (board[rowIndex][x] == null) {
+      return rowIndex;
     }
   }
   // TODO: write the real version of this, rather than always returning 0
@@ -79,8 +87,6 @@ function placeInTable(y, x) {
   piece.classList.add("piece");
   piece.classList.add("p" + currPlayer);
   const dropPiece = document.getElementById(`${y}-${x}`);
-  let row = board[x];
-  row[y] = true;
 
   dropPiece.append(piece);
 }
@@ -103,10 +109,10 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   const x = +evt.target.id; //! Number(evt.target.id)
-  console.log({ x });
+  // console.log({ x });
   // get next spot in column (if none, ignore click)
   const y = findSpotForCol(x);
-  console.log({ y });
+  console.log({ x, y });
   if (y === null) {
     return;
   }
@@ -114,6 +120,7 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   board[y][x] = currPlayer;
+  console.log({ board });
   placeInTable(y, x);
 
   // check for win
